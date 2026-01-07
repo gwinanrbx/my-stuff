@@ -20,12 +20,39 @@ local CommandsModule = require(Modules:WaitForChild('Commands'))
 -- // main
 
 players.PlayerAdded:Connect(function(player)
+	
+	local banned, time_ = CommandsModule.check_ban(player.UserId)
+	if banned then
+		player:Kick('You are banned for ' .. time_ .. ' more days.')
+		return
+	end
+	
 	if InitializeModule.Admins(player) then
 		print('[INITIALIZED ADMIN DATA]')
 		InitializeModule.SendData(player)
 	else
 		warn('[USER NOT ADMIN]')
 		return
+	end
+end)
+
+-- // kick + ban
+
+server_events:WaitForChild('Kick').OnServerEvent:Connect(function(plr, text)
+	if InitializeModule.Admins(plr) then
+		CommandsModule.Kick(plr, text)
+	end
+end)
+
+server_events:WaitForChild('Ban').OnServerEvent:Connect(function(plr, text, duration)
+	if InitializeModule.Admins(plr) then
+		CommandsModule.Ban(plr, text, duration)
+	end
+end)
+
+server_events:WaitForChild('Unban').OnServerEvent:Connect(function(plr, text)
+	if InitializeModule.Admins(plr) then
+		CommandsModule.Unban(plr, text)
 	end
 end)
 
