@@ -13,6 +13,7 @@ local player_gui = player:WaitForChild('PlayerGui')
 local hoverer = require(script.Hovering)
 local tweens = require(script.Parent.Tweens)
 local tabs = require(script.Tabs)
+local Settings = require(ADMIN_FOLDER:WaitForChild('Settings'))
 
 -- // funcs
 
@@ -20,8 +21,9 @@ function UI.Load()
 	local ADMIN_UI_TEMPLATE = UI_FOLDER:WaitForChild('AdminUI')
 	local ADMIN_UI = ADMIN_UI_TEMPLATE:Clone()
 	ADMIN_UI.Parent = player_gui
-	hoverer.Init(ADMIN_UI)
-	
+	if Settings.Draggable == true then
+		hoverer.Init(ADMIN_UI)
+	end
 	return ADMIN_UI
 end
 
